@@ -1,0 +1,22 @@
+GOCR
+ Optical Character Recognition --- gocr 0.49 20100924
+ Copyright (C) 2001-2010 Joerg Schulenburg  GPG=1024D/53BDFBE3
+ released under the GNU General Public License
+ use option -h for help
+
+OCRad
+GNU Ocrad 0.22
+Copyright (C) 2013 Antonio Diaz Diaz.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Tesseract
+tesseract 3.03
+ leptonica-1.70
+  libgif 4.1.6(?) : libjpeg 8d : libpng 1.2.50 : libtiff 4.0.3 : zlib 1.2.8 : webp 0.4.0
+
+
+OCRopus
+https://github.com/tmbdev/ocropy.git @ bea90e4ea5d28c3be012e7dfcab0d8a995def46b
+

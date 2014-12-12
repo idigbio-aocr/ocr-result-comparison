@@ -1,0 +1,6 @@
+*.csv
+*.json
+*.jpg
+*.png
+*.tar.gz
+ocropy/
