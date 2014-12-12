@@ -50,7 +50,7 @@ ocrs = {}
 for o in results:
     for f in results[o]:
         if not (o in ocrs):
-            ocrs[o] = {"pctcor": [], "ratio": []}
+            ocrs[o] = {"pctcor": [], "ratio": [], "points": {"pctcor": 0, "ratio": 0}}
         ocrs[o]["pctcor"].append(results[o][f]["pctcor"])
         ocrs[o]["ratio"].append(results[o][f]["ratio"])
         
@@ -59,6 +59,25 @@ for o in results:
         files[f][o] = {}
         files[f][o]["pctcor"] = results[o][f]["pctcor"]
         files[f][o]["ratio"]= results[o][f]["ratio"]
+
+points_assignment = {
+}
+for i,_ in enumerate(ocrs):
+    points_assignment[i] = len(ocrs) - i - 1
+
+
+for f in files:
+    pctcor_scores = []
+    ratio_scores = []
+    for o in ocrs:
+        pctcor_scores.append((files[f][o]["pctcor"],o))
+        ratio_scores.append((files[f][o]["ratio"],o))
+    pctcor_scores = sorted(pctcor_scores,key=lambda x: x[0],reverse=True)
+    ratio_scores = sorted(ratio_scores,key=lambda x: x[0],reverse=True)
+    for p in points_assignment:
+        ocrs[pctcor_scores[p][1]]["points"]["pctcor"] += points_assignment[p]
+        ocrs[ratio_scores[p][1]]["points"]["ratio"] += points_assignment[p]
+
 
 stats = { "ocrs": {}, "files": files}
 for o in ocrs:
@@ -80,8 +99,9 @@ for o in ocrs:
             "stddev": float(numpy.std(ratio)),
             "range": [float(numpy.amin(ratio)), float(numpy.amax(ratio))],
             "hist": [[ int(x) for x in rn ], [float(x) for x in rbins]]
-        }
-    }    
+        },
+        "points": ocrs[o]["points"]
+    }
 
 with open("ocr-stats.json","wb") as outf:
     json.dump(stats,outf,indent=4)
@@ -104,3 +124,10 @@ with open("ocr-stats.csv","wb") as outf:
             fa.append(files[f][o]["pctcor"])
             fa.append(files[f][o]["ratio"])
         cw.writerow(fa)
+
+with open("points.csv","wb") as outf:
+    cw = csv.writer(outf)
+
+    cw.writerow(["engine","pctcor_score","ratio_score"])
+    for o in ocrs:
+        cw.writerow([o,ocrs[o]["points"]["pctcor"],ocrs[o]["points"]["ratio"]])
